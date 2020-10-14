@@ -10,7 +10,7 @@ Scripts have the following requirements:
 
 1. Install the following packages in the virtualenv:
 
-       pip install blackduck
+       pip3 install blackduck
 
 1. An API key for the Black Duck server must be configured within the `.restconfig.json` file in the script invocation folder - see the `CONFIG FILE` section below.
 
