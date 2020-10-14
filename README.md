@@ -29,4 +29,4 @@ Configure the Black Duck connection within the `.restconfig.json` file in the sc
 
 [ignore_snippets.py](https://github.com/matthewb66/bd_API_utilities/tree/main/ignore_snippets) - Batch process unconfirmed snippets to ignore those below specified criteria
 
-[mark_cves_without_bdsa_ignored.py](https://github.com/matthewb66/bd_API_utilities/tree/main/mark_cves_without_bdsa_ignored) - Batch process CVEs to ignore those within a project version with an associated BDSA but which disagrees on the affected component version (ignoring potentially false positive CVEs due to poor version association).
+[ignore_cves_with_bdsa_mismatch.py](https://github.com/matthewb66/bd_API_utilities/tree/main/mark_cves_without_bdsa_ignored) - Batch process CVEs to ignore those within a project version with an associated BDSA but which disagrees on the affected component version (ignoring potentially false positive CVEs due to poor version association).
