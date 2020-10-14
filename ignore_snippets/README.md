@@ -70,7 +70,7 @@ The `-l MATCHEDLINESMIN` or `--matchedlinesmin MATCHEDLINESMIN` sets the filter 
 
 # EXAMPLE OUTPUT
 
-Running the script with the following options `python3 ignore_snippets.py snip1 1.0 --all --matchedlinesmin 100` (and with an existing snip1 project and 1.0 version would produce the following example output:
+Running the script with the following options `python3 ignore_snippets.py snip1 1.0 --all --matchedlinesmin 100` (and with an existing snip1 project and 1.0 version) would create a list of unconfirmed snippet matches (including previously ignored ones) and whether they would be subsequently ignored if the `--ignore` option was used:
 
     Working on project 'snip1' version '1.0'
 
