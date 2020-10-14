@@ -5,14 +5,12 @@ import json
 
 from blackduck.HubRestApi import HubInstance
 
-parser = argparse.ArgumentParser("Retreive BOM component file matches for the given project and version")
+parser = argparse.ArgumentParser(description='Ignore potentially false positive CVEs with associated BDSAs which disagree on the affected component versions within a Black Duck project version', prog='ignore_cves_with_bdsa_mismatch.py')
 parser.add_argument("project_name", type=str, help='Black Duck project name')
 parser.add_argument("project_version", type=str, help='Black Duck version name')
 parser.add_argument("-l", "--list", help="List potential False Positive CVEs - do not marked as ignored",action='store_true')
 
 args = parser.parse_args()
-
-hub = HubInstance()
 
 def list_projects(project_string):
 	print("Available projects matching '{}':".format(project_string))
