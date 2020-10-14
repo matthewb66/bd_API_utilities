@@ -68,3 +68,40 @@ The `-z SIZEMIN` or `--sizemin SIZEMIN` sets the filter based on the filesize in
 
 The `-l MATCHEDLINESMIN` or `--matchedlinesmin MATCHEDLINESMIN` sets the filter based on the number of lines matched with snippets below the value being processed.
 
+# EXAMPLE OUTPUT
+
+Running the script with the following options `python3 ignore_snippets.py snip1 1.0 --all --matchedlinesmin 100` (and with an existing snip1 project and 1.0 version would produce the following example output:
+
+    Working on project 'snip1' version '1.0'
+
+    Listing all Unconfirmed Snippets - using Coverage = Any, Size = Any, Lines Matched = 100
+
+    FILE                                     SIZE (bytes) BLOCK COVERAGE % MATCHED LINES  STATUS               ACTION              
+    arrayutils.c                                    2,936     1        100           125  Not ignored          Would not be ignored
+    ascii.c                                         3,297     1        100           140  Not ignored          Would not be ignored
+    bftest.c                                        2,576     1        100           106  Not ignored          Would not be ignored
+    blowfish.c                                     18,218     1         87           266  Ignored              Would not be ignored
+    char.c                                          4,804     1        100           226  Not ignored          Would not be ignored
+    clean-sat.c                                       778     1        100            27  Not ignored          Would be ignored    
+    CodeFormatter.java                              2,863     1        100            88  Not ignored          Would be ignored    
+    CodeRenderer.java                               3,993     1         69            96  Ignored              Would be ignored    
+    CodeTag.java                                    4,396     1         85           144  Ignored              Would not be ignored
+    datum.c                                         5,687     1        100           205  Not ignored          Would not be ignored
+    geo_selfuncs.c                                  2,371     1        100            91  Not ignored          Would be ignored    
+    gpgsplit.c                                     20,277     1         98           871  Ignored              Would not be ignored
+    init.rb                                            21     1        100             0  Not ignored          Would be ignored    
+    like_match.c                                    8,315     1        100           334  Not ignored          Would not be ignored
+    lockfuncs.c                                     4,701     1        100           178  Not ignored          Would not be ignored
+    mac.c                                           6,495     1        100           313  Not ignored          Would not be ignored
+    misc.c                                          1,127     1        100            57  Not ignored          Would be ignored    
+    samplefile1.h                                   6,771     1         31            82  Ignored              Would be ignored    
+    samplefile2.c                                   3,639     1         37            77  Ignored              Would be ignored    
+    samplefile2.c                                   3,639     2         50            45  Not ignored          Would be ignored    
+    sets.c                                          5,893     1        100           207  Not ignored          Would not be ignored
+    shmtest.c                                       4,554     1        100           198  Not ignored          Would not be ignored
+    tid.c                                           7,967     1        100           315  Not ignored          Would not be ignored
+    version.c                                         625     1        100            24  Not ignored          Would be ignored    
+    xid.c                                           3,711     1        100           165  Not ignored          Would not be ignored
+
+    23 Total Files with unconfirmed snippets in project (6 ignored already)
+    0 snippets Ignored
