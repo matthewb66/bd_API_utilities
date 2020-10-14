@@ -1,10 +1,10 @@
 # Black Duck API utilities
 
-Various API scripts for Black Duck - for use alongside the hub_rest_api_python package
+Various API scripts for Black Duck - for use alongside the [hub_rest_api_python](https://github.com/blackducksoftware/hub-rest-api-python) API wrapper package provided by Black Duck.
 
 # PREREQUISITES
 
-All scripts have the following requirements:
+Scripts have the following requirements:
 
 1. Python 3 must be installed.
 
