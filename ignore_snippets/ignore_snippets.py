@@ -2,7 +2,7 @@
 
 import argparse
 import json
-import sys
+import sys, os
 
 from blackduck.HubRestApi import HubInstance
 
@@ -122,7 +122,7 @@ elif args.all:
 else:
     print("Listing all Unconfirmed, Not Ignored Snippets - using Coverage = {}, Size = {}, Lines Matched = {}\n".format(covstring, sizestring, linesstring))
 
-print("{:40} {:12} {:5} {:10} {:13}  {:20} {:20}".format("FILE", "SIZE (bytes)", "BLOCK", "COVERAGE %", "MATCHED LINES", "STATUS", "ACTION"))
+print("     {:12}  {:5}  {:9}  {:10}  {:20}  {:20}".format("SIZE (bytes)", "BLOCK", "COVERAGE%", "MATCHLINES", "STATUS", "ACTION"))
 ignoredcount = 0
 alreadyignored = 0
 snippet_bom_entries = get_snippet_entries(hub, project_id, version_id)
@@ -142,17 +142,18 @@ if snippet_bom_entries:
             else:
                 igstatus = "Not ignored"
             matchedlines = match['sourceEndLines'][0] - match['sourceStartLines'][0]
+            filename = os.path.join(match['matchFilePath'], snippet_item['name'])
             if (int(match['matchCoverage']) < int(args.coveragemin)) and (int(snippet_item['size']) < int(args.sizemin)) and (matchedlines < int(args.matchedlinesmin)):
                 if not (args.ignore or args.unignore):
-                    print("{:40} {:>12,d} {:5} {:10} {:13}  {:20} {:20}".format(snippet_item['name'], snippet_item['size'], blocknum, match['matchCoverage'], matchedlines, igstatus, "Would be ignored"))
+                    print("{}\n     {:>12,d}  {:5}  {:9}  {:10}  {:20}  {:20}".format(filename, snippet_item['size'], blocknum, match['matchCoverage'], matchedlines, igstatus, "Would be ignored"))
                 else:
                     if ignore_snippet_bom_entry(hub, project_id, version_id, snippet_item, not(args.unignore)):
-                        print("{:40} {:>12,d} {:5} {:10} {:13}  {:20} {:20}".format(snippet_item['name'], snippet_item['size'], blocknum, match['matchCoverage'], matchedlines, igstatus, ignorestr))
+                        print("{}\n     {:>12,d}  {:5}  {:9}  {:10}  {:20}  {:20}".format(filename, snippet_item['size'], blocknum, match['matchCoverage'], matchedlines, igstatus, ignorestr))
                         ignoredcount += 1
                     else:
-                        print("File: {:40} , Block {}: Could not ignore (API Error)".format(snippet_item['name'], blocknum))
+                        print("ERROR File: {} , Block {}: Could not ignore (API Error)".format(filename, blocknum))
             elif not (args.ignore or args.unignore):
-                print("{:40} {:>12,d} {:5} {:10} {:13}  {:20} {:20}".format(snippet_item['name'], snippet_item['size'], blocknum, match['matchCoverage'], matchedlines, igstatus, "Would not be ignored"))
+                print("{}\n     {:>12,d}  {:5}  {:9}  {:10}  {:20}  {:20}".format(filename, snippet_item['size'], blocknum, match['matchCoverage'], matchedlines, igstatus, "Would not be ignored"))
             blocknum += 1
-    print("\n{} Total Files with unconfirmed snippets in project ({} ignored already)".format(len(snippet_bom_entries['items']), alreadyignored))
+    print("\n{} Total unconfirmed snippets in project ({} ignored already)".format(len(snippet_bom_entries['items']), alreadyignored))
     print("{} snippets {}".format(ignoredcount, ignorestr))
