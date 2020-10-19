@@ -81,16 +81,6 @@ Running the script with the following options `python3 ignore_snippets.py snip1 
             1,018,162      1         52          39  Not ignored           Would be ignored    
     /cbmc-cbmc-5.8/src/ansi-c/coverity-compiler-compat.h
             1,018,162      2          1          26  Not ignored           Would be ignored     
-    /cbmc-cbmc-5.8/src/ansi-c/coverity-compiler-compat.h
-            1,015,861      2          1          26  Not ignored           Would be ignored    
-    /cbmc-cbmc-5.8/src/ansi-c/coverity-compiler-compat.h
-            1,016,006      2          1          26  Not ignored           Would be ignored    
-    /esp8266-frankenstein-6ed48eedb2166ad20611b24ee2b4e4e229357051/coverity_configs/g++cc-config-1/coverity-compiler-compat.h
-            1,016,006      1         52          39  Not ignored           Would be ignored    
-    /cbmc-cbmc-5.8/src/ansi-c/coverity-compiler-compat.h
-            1,016,006      2          1          26  Not ignored           Would be ignored     
-    /cbmc-cbmc-5.8/src/ansi-c/coverity-compiler-compat.h
-            1,015,861      2          1          26  Not ignored           Would be ignored    
 
-    7 Total unconfirmed snippets in project (0 ignored already)
+    2 Total unconfirmed snippets in project (0 ignored already)
     0 snippets Ignored
