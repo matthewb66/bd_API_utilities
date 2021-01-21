@@ -39,11 +39,11 @@ def patch_cves(version, vuln_list):
 	response = hub.execute_get(vulnerable_components_url, custom_headers=custom_headers)
 	vulnerable_bom_components = response.json().get('items', [])
 
-	status = "PATCHED"
-	comment = "Patched as linked BDSA has component version as fixed"
+	status = "Ignored"
+	comment = "Ignored as linked BDSA has component version as fixed"
 
-	patchcount = 0
-	alreadypatchedcount = 0
+	ignoredcount = 0
+	alreadyignorededcount = 0
 	try:
 		for vuln in vulnerable_bom_components:
 			vuln_name = vuln['vulnerabilityWithRemediation']['vulnerabilityName']
@@ -54,16 +54,16 @@ def patch_cves(version, vuln_list):
 					vuln['remediationComment'] = comment
 					result = hub.execute_put(vuln['_meta']['href'], data=vuln)
 					if result.status_code == 202:
-						patchcount += 1
-						print("Marked {} as patched".format(vuln_name))
+						ignoredcount += 1
+						print("Marked {} as ignored".format(vuln_name))
 				else:
-					alreadypatchedcount += 1
+					alreadyignoredcount += 1
 
 	except Exception as e:
 		print("ERROR: Unable to update vulnerabilities via API\n" + str(e))
 		return()
-	print("- {} CVEs already marked as patched".format(alreadypatchedcount))
-	print("- {} CVEs newly marked as patched".format(patchcount))
+	print("- {} CVEs already marked as ignored".format(alreadyignoredcount))
+	print("- {} CVEs newly marked as ignored".format(ignoredcount))
 	return()
 
 hub = HubInstance()
