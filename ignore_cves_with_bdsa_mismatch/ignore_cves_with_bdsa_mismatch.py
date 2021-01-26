@@ -39,30 +39,37 @@ def patch_cves(version, vuln_list):
 	response = hub.execute_get(vulnerable_components_url, custom_headers=custom_headers)
 	vulnerable_bom_components = response.json().get('items', [])
 
-	status = "Ignored"
+	active_statuses = [ "NEW", "NEEDS_REVIEW", "REMEDIATION_REQUIRED"]
+	status = "IGNORED"
 	comment = "Ignored as linked BDSA has component version as fixed"
 
+	print("Processing vulnerabilities ...")
 	ignoredcount = 0
-	alreadyignorededcount = 0
+	alreadyignoredcount = 0
 	try:
 		for vuln in vulnerable_bom_components:
 			vuln_name = vuln['vulnerabilityWithRemediation']['vulnerabilityName']
 
 			if vuln_name in vuln_list:
-				if vuln['vulnerabilityWithRemediation']['remediationStatus'] != "PATCHED":
+				if vuln['vulnerabilityWithRemediation']['remediationStatus'] in active_statuses:
 					vuln['remediationStatus'] = status
 					vuln['remediationComment'] = comment
 					result = hub.execute_put(vuln['_meta']['href'], data=vuln)
 					if result.status_code == 202:
 						ignoredcount += 1
-						print("Marked {} as ignored".format(vuln_name))
+						print("{}: marked ignored".format(vuln_name))
+					else:
+						print("{}: Unable to change status".format(vuln_name))
 				else:
+					print(vuln_name + ": has BDSA which disgrees on version applicability but not active - no action")
 					alreadyignoredcount += 1
+			else:
+				print(vuln_name + ": No action")
 
 	except Exception as e:
 		print("ERROR: Unable to update vulnerabilities via API\n" + str(e))
 		return()
-	print("- {} CVEs already marked as ignored".format(alreadyignoredcount))
+	print("- {} CVEs already inactive".format(alreadyignoredcount))
 	print("- {} CVEs newly marked as ignored".format(ignoredcount))
 	return()
 
@@ -93,26 +100,33 @@ response = hub.execute_get(components_url, custom_headers=custom_headers)
 components = response.json().get('items', [])
 
 cve_list = []
+
 num = 0
+total = 0
 print("Processing components:")
 for comp in components:
 # 	print(comp)
-	print("- " + comp['componentName'])
+	print("- " + comp['componentName'] + '/' + comp['componentVersionName'])
 	for x in comp['_meta']['links']:
 		if x['rel'] == 'vulnerabilities':
 			custom_headers = {'Accept':'application/vnd.blackducksoftware.vulnerability-4+json'}
 			response = hub.execute_get(x['href'] + "?limit=9999", custom_headers=custom_headers)
 			vulns = response.json().get('items', [])
 			for vuln in vulns:
+				total += 1
 				if vuln['source'] == 'NVD':
 					for x in vuln['_meta']['links']:
 						if x['rel'] == 'related-vulnerabilities':
 							if x['label'] == 'BDSA':
 # 								print("{} has BDSA which disagrees with component version - potential false positive".format(vuln['name']))
-								cve_list.append(vuln['name'])
+								if vuln['name'] not in cve_list:
+									cve_list.append(vuln['name'])
 								num += 1
 
+print("Found {} total vulnerabilities".format(total))
 print("Found {} CVEs with associated BDSAs but which do not agree on affected component version\n".format(num))
+
+print(cve_list)
 
 if not args.list:
 	patch_cves(version, cve_list)
